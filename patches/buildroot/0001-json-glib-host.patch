@@ -1,0 +1,22 @@
+From 4d927155ebe576fba6a7e96ed58997b8b56d70f5 Mon Sep 17 00:00:00 2001
+From: Jarkko Sakkinen <jarkko@kernel.org>
+Date: Mon, 18 Dec 2023 23:06:33 +0200
+Subject: [PATCH] package/json-glib: add host build
+
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ package/json-glib/json-glib.mk | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/package/json-glib/json-glib.mk b/package/json-glib/json-glib.mk
+index b7ff0bfd57..d6a111c38b 100644
+--- a/package/json-glib/json-glib.mk
++++ b/package/json-glib/json-glib.mk
+@@ -28,3 +28,4 @@ endif
+ JSON_GLIB_LDFLAGS = $(TARGET_LDFLAGS) $(TARGET_NLS_LIBS)
+ 
+ $(eval $(meson-package))
++$(eval $(host-meson-package))
+-- 
+2.40.1
+

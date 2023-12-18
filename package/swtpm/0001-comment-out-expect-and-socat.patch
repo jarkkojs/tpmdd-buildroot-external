@@ -1,0 +1,46 @@
+From 067c32ba93774b273de9af872b5587798dcabb15 Mon Sep 17 00:00:00 2001
+From: Jarkko Sakkinen <jarkko@kernel.org>
+Date: Tue, 19 Dec 2023 05:21:20 +0200
+Subject: [PATCH] configure.ac: comment out "expect" and "socat"
+
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ configure.ac | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 49caf96..4acc763 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -394,20 +394,20 @@ AS_IF([test "x$enable_default_pcr_banks" != "x"],[
+ pcr_bank_checks
+ AC_SUBST([DEFAULT_PCR_BANKS])
+ 
+-AC_PATH_PROG([EXPECT], expect)
+-if test "x$EXPECT" = "x"; then
+-	AC_MSG_ERROR([expect is required: expect package])
+-fi
++# AC_PATH_PROG([EXPECT], expect)
++# if test "x$EXPECT" = "x"; then
++# 	AC_MSG_ERROR([expect is required: expect package])
++# fi
+ 
+ AC_PATH_PROG([GAWK], gawk)
+ if test "x$GAWK" = "x"; then
+ 	AC_MSG_ERROR([gawk is required: gawk package])
+ fi
+ 
+-AC_PATH_PROG([SOCAT], socat)
+-if test "x$SOCAT" = "x"; then
+-	AC_MSG_ERROR([socat is required: socat package])
+-fi
++# AC_PATH_PROG([SOCAT], socat)
++# if test "x$SOCAT" = "x"; then
++# 	AC_MSG_ERROR([socat is required: socat package])
++# fi
+ 
+ AC_PATH_PROG([BASE64], base64)
+ if test "x$BASE64" = "x"; then
+-- 
+2.40.1
+

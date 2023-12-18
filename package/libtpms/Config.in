@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBTPMS
+	bool "libtpms"
+        depends on BR2_USE_WCHAR # glib2
+        depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+        depends on BR2_USE_MMU # glib2
+	help
+	  TPM emulation library
+
+	  https://github.com/stefanberger/libtpms

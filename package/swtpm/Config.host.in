@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_SWTPM
+	bool "swtpm-host"
+	depends on BR2_PACKAGE_GOBJECT_INTROSPECTION_ARCH_SUPPORTS # gobject-introspection
+	select BR2_PACKAGE_GOBJECT_INTROSPECTION
+	help
+	  Compiles SWTPM software TPM emulator for the host.
+
+	  https://github.com/stefanberger/swtpm

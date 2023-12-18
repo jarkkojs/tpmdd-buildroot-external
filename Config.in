@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_TPMDD_PATH/package/libtpms/Config.in"
+source "$BR2_EXTERNAL_TPMDD_PATH/package/swtpm/Config.host.in"
