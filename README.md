@@ -33,9 +33,9 @@ make linux-menuconfig
 
 ## TPM emulation
 
-1. TPM2 TIS/FIFO: `output/build/images/start-qemu.sh`
-2. TPM2 TIS/CRB: `output/build/images/start-qemu.sh --tpm-crb`
-3. TPM1 TIS/FIFO: `output/build/images/start-qemu.sh --tpm1`
+1. TPM2 TIS/FIFO: `output/images/start-qemu.sh`
+2. TPM2 TIS/CRB: `output/images/start-qemu.sh --tpm-crb`
+3. TPM1 TIS/FIFO: `output/images/start-qemu.sh --tpm1`
 
 ## kselftest
 

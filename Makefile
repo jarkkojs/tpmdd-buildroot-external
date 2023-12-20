@@ -8,9 +8,7 @@ BUILDROOT_VERSION	:= 2023.11
 BUILDROOT_SITE		:= https://buildroot.org/downloads/buildroot-$(BUILDROOT_VERSION).tar.gz
 
 define buildroot
-	make -C "$(OUTPUT)/buildroot" \
-		BR2_EXTERNAL="$(ROOT)" \
-		O="$(OUTPUT)/build" $(1)
+	make -C "$(OUTPUT)/buildroot" BR2_EXTERNAL="$(ROOT)" O="$(OUTPUT)" $(1)
 endef
 
 all: buildroot
