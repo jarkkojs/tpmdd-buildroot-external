@@ -67,7 +67,5 @@ ssh -F output/build/images/ssh_config tpmdd.local
 The image has `kselftest` pre-installed. TPM2 tests can be run by:
 
 ```
-/usr/lib/kselftests/run_kselftest.sh -t tpm2:test_smoke.sh
-/usr/lib/kselftests/run_kselftest.sh -t tpm2:test_space.sh
-/usr/lib/kselftests/run_kselftest.sh -t tpm2:test_async.sh
+output/images/run-kselftest-tpm2.sh
 ```

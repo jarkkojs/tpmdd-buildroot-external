@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e 
+set -u
+
+cd "${0%/*}/"
+
+function finish {
+  kill -15 $(cat qemu.pid) 2>&1 > /dev/null && true
+}
+trap finish EXIT
+
+./start-qemu.sh &
+sleep 1
+./kselftest-tpm2.exp
