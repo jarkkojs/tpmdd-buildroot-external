@@ -7,7 +7,6 @@ hosts it as a TPM emulator for QEMU.
 
 Basic build process is:
 
-
 ```
 git clone https://github.com/jarkkojs/tpmdd-buildroot-external
 cd tpmdd-buildroot-external
@@ -18,20 +17,36 @@ This makes a build for `tpmdd_qemu_x86_64` board, which is the only board define
 at the moment. More boards, including real hardware targets are planned to be
 added in future.
 
+## Configuration
+
 Configuring BuildRoot:
 
-- `buildroot-menuconfig`
-- `linux-menuconfig`
+```
+make buildroot-menuconfig
+```
 
-## Available tools
+Configuring Linux kernel:
 
-Starting QEMU after a build:
+```
+make linux-menuconfig
+```
+
+## TPM emulation
 
 1. TPM2 TIS/FIFO: `output/build/images/start-qemu.sh`
 2. TPM2 TIS/CRB: `output/build/images/start-qemu.sh --tpm-crb`
 3. TPM1 TIS/FIFO: `output/build/images/start-qemu.sh --tpm1`
 
-Tests:
+## kselftest
 
-- `/usr/lib/kselftests/run_selftest.sh`
-- `keyutils`
+
+```
+/usr/lib/kselftests/run_selftest.sh
+```
+
+## SSH
+
+
+```
+ssh -F output/build/images/ssh_config tpmdd.local
+```
