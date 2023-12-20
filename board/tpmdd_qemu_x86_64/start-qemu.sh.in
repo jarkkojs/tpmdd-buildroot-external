@@ -2,35 +2,24 @@
 
 cd "${0%/*}/"
 
-mode_tpm_crb=false
-mode_tpm1=false
-
+QEMU_TPM_DEVICE="tpm-tis"
+SWTPM_TPM2="--tpm2"
 while [ "$1" ]; do
   case "$1" in
-  --tpm-crb) mode_tpm_crb=true; shift;;
-  --tpm1) mode_tpm1=true; shift;;
+  --tpm-crb) QEMU_TPM_DEVICE="tpm-crb"; shift;;
+  --tpm1) SWTPM_TPM2="" shift;;
   --) shift; break;;
   *) echo "unknown option: $1" >&2; exit 1;;
   esac
 done
 
-SWTPM=`mktemp -d -t swtpm-XXXX`
-EXTRA_ARGS="$EXTRA_ARGS -chardev socket,id=chrtpm,path=$SWTPM/swtpm-sock"
-EXTRA_ARGS="$EXTRA_ARGS -tpmdev emulator,id=tpm0,chardev=chrtpm"
-if ${mode_tpm_crb}; then
-  echo "Enabling TPM Command Response Buffer (CRB)"
-  EXTRA_ARGS="$EXTRA_ARGS -device tpm-crb,tpmdev=tpm0"
-else
-  echo "Enabling TPM Interface Specification (TIS)"
-  EXTRA_ARGS="$EXTRA_ARGS -device tpm-tis,tpmdev=tpm0"
-fi
-if ${mode_tpm1}; then
-  ../host/bin/swtpm socket --tpmstate dir=$SWTPM --ctrl type=unixio,path=$SWTPM/swtpm-sock --log level=20 -d
-else
-  ../host/bin/swtpm socket --tpmstate dir=$SWTPM --ctrl type=unixio,path=$SWTPM/swtpm-sock --log level=20 --tpm2 -d
-fi
+SWTPM_DIR=`mktemp -d -t swtpm-XXXX`
+@HOST_DIR@/bin/swtpm socket \
+  --tpmstate dir=${SWTPM_DIR} \
+  --ctrl type=unixio,path=${SWTPM_DIR}/swtpm-sock \
+  --log level=20 ${SWTPM_TPM2} -d
 
-exec ../host/bin/qemu-system-x86_64 \
+exec @HOST_DIR@/bin/qemu-system-x86_64 \
   -M pc \
   -kernel bzImage \
   -drive file=rootfs.ext2,if=virtio,format=raw \
@@ -39,4 +28,7 @@ exec ../host/bin/qemu-system-x86_64 \
   -net user,hostfwd=tcp::10022-:22 \
   -rtc base=localtime \
   -nographic \
-  ${EXTRA_ARGS} "$@"
+  -chardev socket,id=chrtpm,path=${SWTPM_DIR}/swtpm-sock \
+  -tpmdev emulator,id=tpm0,chardev=chrtpm \
+  -device ${QEMU_TPM_DEVICE},tpmdev=tpm0 \
+  "$@"
