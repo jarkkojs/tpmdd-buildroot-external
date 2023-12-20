@@ -19,11 +19,14 @@ SWTPM_DIR=`mktemp -d -t swtpm-XXXX`
   --ctrl type=unixio,path=${SWTPM_DIR}/swtpm-sock \
   --log level=20 ${SWTPM_TPM2} -d
 
+echo $$ > qemu.pid
 exec @HOST_DIR@/bin/qemu-system-x86_64 \
   -M pc \
   -kernel bzImage \
+  -monitor unix:monitor.sock,server,nowait \
+  -serial unix:serial.sock,server,wait \
   -drive file=rootfs.ext2,if=virtio,format=raw \
-  -append "root=/dev/vda console=tty1 console=ttyS0" \
+  -append "root=/dev/vda console=ttyS0" \
   -net nic,model=virtio \
   -net user,hostfwd=tcp::10022-:22 \
   -rtc base=localtime \

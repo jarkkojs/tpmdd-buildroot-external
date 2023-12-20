@@ -1,11 +1,11 @@
 A BuildRoot overlay for testing `linux-integrity` kernel patches, and patches going
 to [linux-tpmdd](https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git)
-in particular. Builds [swtpm](https://github.com/stefanberger/swtpm) for the host and
-hosts it as a TPM emulator for QEMU.
+in particular. Uses [swtpm](https://github.com/stefanberger/swtpm) as a TPM emulation
+layer for QEMU.
 
 ## Build
 
-Basic build process is:
+The basic build process is:
 
 ```
 git clone https://github.com/jarkkojs/tpmdd-buildroot-external
@@ -14,8 +14,7 @@ make
 ```
 
 This makes a build for `tpmdd_qemu_x86_64` board, which is the only board defined
-at the moment. More boards, including real hardware targets are planned to be
-added in future.
+at the moment.
 
 ## Configuration
 
@@ -31,22 +30,44 @@ Configuring Linux kernel:
 make linux-menuconfig
 ```
 
-## TPM emulation
+## Running QEMU
 
-1. TPM2 TIS/FIFO: `output/images/start-qemu.sh`
-2. TPM2 TIS/CRB: `output/images/start-qemu.sh --tpm-crb`
-3. TPM1 TIS/FIFO: `output/images/start-qemu.sh --tpm1`
+Starting QEMU process:
 
-## kselftest
+1. TPM2 TIS/FIFO: `output/images/start-qemu.sh &`
+2. TPM2 TIS/CRB: `output/images/start-qemu.sh --tpm-crb &`
+3. TPM1 TIS/FIFO: `output/images/start-qemu.sh --tpm1 &`
 
+Serial console access:
 
 ```
-/usr/lib/kselftests/run_selftest.sh
+socat - UNIX-CONNECT:output/images/serial.sock
+```
+
+QEMU monitor access:
+
+```
+socat - UNIX-CONNECT:output/images/monitor.sock
+```
+
+Ending QEMU process:
+
+```
+kill -15 `cat output/images/qemu.pid`
 ```
 
 ## SSH
 
-
 ```
 ssh -F output/build/images/ssh_config tpmdd.local
+```
+
+## kselftest
+
+The image has `kselftest` pre-installed. TPM2 tests can be run by:
+
+```
+/usr/lib/kselftests/run_kselftest.sh -t tpm2:test_smoke.sh
+/usr/lib/kselftests/run_kselftest.sh -t tpm2:test_space.sh
+/usr/lib/kselftests/run_kselftest.sh -t tpm2:test_async.sh
 ```
